@@ -1,0 +1,91 @@
+{
+  "project_info": {
+    "project_number": "748910689840",
+    "firebase_url": "https://subwatch-e870b-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "subwatch-e870b",
+    "storage_bucket": "subwatch-e870b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:748910689840:android:972bbfe24f7fac03f537f5",
+        "android_client_info": {
+          "package_name": "com.AlexBratu.JavaSubWatch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "748910689840-qvbcg4f0hopl12qkhbuglhqh2jk634tk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.AlexBratu.JavaSubWatch",
+            "certificate_hash": "7db0e6ef80996e7f1b7086c44de716d135636cd9"
+          }
+        },
+        {
+          "client_id": "748910689840-tvb21f8n44osfa0ujj7kq6tqlkocedbj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKtOtzjqIlf-nq3fc6gcfO1LdtEinRp4g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "748910689840-tvb21f8n44osfa0ujj7kq6tqlkocedbj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "748910689840-5b24n3i9n0vi3qcr041va5l2p49a7hbh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.subWatchFlutter"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:748910689840:android:0773d062c26a6bbbf537f5",
+        "android_client_info": {
+          "package_name": "com.example.sub_watch_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "748910689840-tvb21f8n44osfa0ujj7kq6tqlkocedbj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKtOtzjqIlf-nq3fc6gcfO1LdtEinRp4g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "748910689840-tvb21f8n44osfa0ujj7kq6tqlkocedbj.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "748910689840-5b24n3i9n0vi3qcr041va5l2p49a7hbh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.subWatchFlutter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
