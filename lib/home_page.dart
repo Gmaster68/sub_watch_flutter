@@ -19,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   final User? user = Auth().currentUser;
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
+  bool isMenuOpen = false;
 
   Future<void> signOut() async {
     await Auth().signOut();
@@ -195,6 +196,15 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
+        leading: IconButton(
+            icon: isMenuOpen
+                ? const Icon(Icons.menu_open)
+                : const Icon(Icons.menu),
+            onPressed: () {
+              setState(() {
+                isMenuOpen = !isMenuOpen;
+              });
+            }),
         backgroundColor: AppColors.secondaryColor,
         title: _title(),
         actions: [_signOutButton()],

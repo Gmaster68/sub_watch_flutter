@@ -106,6 +106,13 @@ class _AnimatedSubscriptionListState extends State<AnimatedSubscriptionList>
           color: AppColors.accentColor,
         );
         break;
+      case 'SOCIAL MEDIA':
+        icon = const Icon(
+          Icons.facebook,
+          size: 20,
+          color: AppColors.accentColor,
+        );
+        break;
       case 'MISCELLANEOUS':
         icon = const Icon(
           Icons.miscellaneous_services,
@@ -148,57 +155,69 @@ class _AnimatedSubscriptionListState extends State<AnimatedSubscriptionList>
   }
 
   Widget _subscriptionItem(Subscription subscription) {
-    return Card(
-      elevation: 7,
-      shadowColor: Color.fromARGB(255, 132, 132, 132),
-      color: AppColors.backgroundColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Container(
-        padding: const EdgeInsets.only(bottom: 5),
-        decoration: BoxDecoration(
-          border: Border.all(color: AppColors.accentColor),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Card(
+        elevation: 5,
+        shadowColor: Color.fromARGB(255, 132, 132, 132),
+        color: AppColors.backgroundColor,
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
-          color: AppColors.secondaryColor,
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _subscriptionType(subscription.subscriptionType),
-                Text(
-                  subscription.subscriptionType,
-                  style: _subItemLabelStyle(),
-                ),
-              ],
-            ),
-            Container(
-              width: 2, // Adjust the width of the vertical line
-              height: 60, // Adjust the height of the vertical line
-              color: AppColors.accentColor,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _subItemElement('Name:', subscription.name),
-                _subItemElement(
-                  'Date of subscription: ',
-                  subscription.formatDate(subscription.acquisitionDate),
-                ),
-                _subItemElement(
-                  'Day of payment',
-                  subscription.monthlyPaymentDay.toString(),
-                ),
-                _subItemElement('Price', subscription.price.toString()),
-              ],
-            ),
-          ],
+        child: Container(
+          padding: const EdgeInsets.only(bottom: 5),
+          decoration: BoxDecoration(
+            border: Border.all(color: AppColors.accentColor),
+            borderRadius: BorderRadius.circular(10),
+            color: AppColors.secondaryColor,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                  flex: 3,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      _subscriptionType(subscription.subscriptionType),
+                      Text(
+                        subscription.subscriptionType,
+                        style: _subItemLabelStyle()
+                            .copyWith(color: AppColors.primaryColor),
+                      ),
+                    ],
+                  )),
+              Container(
+                width: 2, // Adjust the width of the vertical line
+                height: 60, // Adjust the height of the vertical line
+                color: AppColors.accentColor,
+              ),
+              Expanded(
+                  flex: 6,
+                  child: Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _subItemElement('Name:', subscription.name),
+                          _subItemElement(
+                            'Date of subscription: ',
+                            subscription
+                                .formatDate(subscription.acquisitionDate),
+                          ),
+                          _subItemElement(
+                            'Day of payment',
+                            subscription.monthlyPaymentDay.toString(),
+                          ),
+                          _subItemElement(
+                              'Price', subscription.price.toString()),
+                        ],
+                      ))),
+            ],
+          ),
         ),
       ),
     );
