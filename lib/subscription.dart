@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:intl/intl.dart';
 
 class Subscription {
@@ -46,5 +47,11 @@ class Subscription {
 
   String formatDate(DateTime date) {
     return DateFormat('dd MM yyyy').format(date);
+  }
+
+  void saveToDatabase(String userId) {
+    DatabaseReference databaseReference =
+        FirebaseDatabase.instance.ref('users/$userId');
+    databaseReference.push().set(toMap());
   }
 }

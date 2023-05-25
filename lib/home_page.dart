@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sub_watch_flutter/AnumatedSubsciptionList.dart';
+import 'package:sub_watch_flutter/add_subscription_page.dart';
 import 'package:sub_watch_flutter/colors.dart';
 import 'package:sub_watch_flutter/subscription.dart';
 import './auth_page.dart';
@@ -10,15 +11,12 @@ import './auth_page.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
-  @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
   List<Subscription> subscriptions = List.empty();
   final User? user = Auth().currentUser;
-  late AnimationController _controller;
-  late Animation<Offset> _offsetAnimation;
   bool isMenuOpen = false;
 
   Future<void> signOut() async {
@@ -60,112 +58,13 @@ class _HomePageState extends State<HomePage> {
 
       subscriptionsData.forEach((key, value) {
         Subscription subscription = Subscription.fromMap(value);
-        print("first addition of $subscription");
         subscriptions.add(subscription);
       });
 
       return subscriptions;
     } else {
-      return []; // Return an empty list if no subscriptions found
+      return [];
     }
-  }
-
-  TextStyle _subItemLabelStyle() {
-    return const TextStyle(
-        color: AppColors.textColor,
-        fontWeight: FontWeight.bold,
-        fontFamily: 'OpenSans');
-  }
-
-  TextStyle _subItemElementStyle() {
-    return const TextStyle(
-      color: AppColors.textColor,
-      fontFamily: 'OpenSans',
-    );
-  }
-
-  Widget _subItemElement(String labelName, String elementName) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Text(labelName, style: _subItemLabelStyle()),
-        Text(elementName, style: _subItemElementStyle())
-      ],
-    );
-  }
-
-  Widget _subscriptionItem(Subscription subscription) {
-    return Container(
-        padding: const EdgeInsets.only(bottom: 5),
-        decoration: BoxDecoration(
-            border: Border.all(color: AppColors.accentColor),
-            color: AppColors.secondaryColor),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                //COLUMN1: Sub type, with type name
-                children: [
-                  _subscriptionType(subscription.subscriptionType),
-                  Text(
-                    subscription.subscriptionType,
-                  )
-                ]),
-            const VerticalDivider(
-              color: AppColors.accentColor,
-              thickness: 1,
-            ),
-            Column(
-              //COLUMN2: Sub name, price, date, all other detes.
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _subItemElement('Name:', subscription.name),
-                _subItemElement('Date of subscription: ',
-                    subscription.formatDate(subscription.acquisitionDate)),
-                _subItemElement('Day of payment',
-                    subscription.monthlyPaymentDay.toString()),
-                _subItemElement('Price', subscription.price.toString()),
-              ],
-            )
-          ],
-        ));
-  }
-
-  Widget _subscriptionType(String subscriptionType) {
-    Icon icon;
-    switch (subscriptionType) {
-      case 'MUSIC':
-        icon = const Icon(Icons.music_note, size: 20);
-        break;
-      case 'MOVIES':
-        icon = const Icon(Icons.movie, size: 20);
-        break;
-      case 'BOOKS':
-        icon = const Icon(Icons.book, size: 20);
-        break;
-      case 'GAMES':
-        icon = const Icon(Icons.gamepad_rounded, size: 20);
-        break;
-      case 'DATING':
-        icon = const Icon(Icons.heat_pump_rounded, size: 20);
-        break;
-      case 'EDUCATION':
-        icon = const Icon(Icons.school, size: 20);
-        break;
-      case 'FOOD':
-        icon = const Icon(Icons.local_pizza, size: 20);
-        break;
-      case 'MISCELLANEOUS':
-        icon = const Icon(Icons.miscellaneous_services, size: 20);
-        break;
-      default:
-        icon = const Icon(Icons.error, size: 20);
-    }
-    return icon;
   }
 
   Widget subItemList() {
@@ -174,10 +73,9 @@ class _HomePageState extends State<HomePage> {
       builder:
           (BuildContext context, AsyncSnapshot<List<Subscription>> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // Show a loading spinner while waiting
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
-          return Text(
-              'Error: ${snapshot.error}'); // Show an error message if something went wrong
+          return Text('Error: ${snapshot.error}');
         } else {
           List<Subscription> subList = snapshot.data ?? [];
 
@@ -191,35 +89,208 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _drawerHeader() {
+    return const SizedBox(
+      height: 70,
+      child: DrawerHeader(
+        decoration: BoxDecoration(
+          color: AppColors.primaryColor,
+        ),
+        child: Text(
+          'Menu',
+          style: TextStyle(
+            color: AppColors.textColor,
+            fontSize: 24,
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Widget _drawer(BuildContext context) {
+  //   return Drawer(
+  //     child: SafeArea(
+  //       child: Container(
+  //         color: AppColors.backgroundColor,
+  //         child: ListView(
+  //           padding: EdgeInsets.zero,
+  //           children: <Widget>[
+  //             _drawerHeader(),
+  //             ListTile(
+  //               leading: const Icon(Icons.home, color: AppColors.textColor),
+  //               title: const Text(
+  //                 'Home',
+  //                 style: TextStyle(
+  //                   color: AppColors.textColor,
+  //                   fontSize: 16,
+  //                 ),
+  //               ),
+  //               onTap: () {
+  //                 Navigator.pop(context);
+  //               },
+  //             ),
+  //             ListTile(
+  //               leading: const Icon(Icons.settings, color: AppColors.textColor),
+  //               title: const Text(
+  //                 'Settings',
+  //                 style: TextStyle(
+  //                   color: AppColors.textColor,
+  //                   fontSize: 16,
+  //                 ),
+  //               ),
+  //               onTap: () {
+  //                 Navigator.pop(context);
+  //               },
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  Widget _drawer(BuildContext context) {
+    return Drawer(
+      child: Builder(
+        builder: (BuildContext context) {
+          // Set the status bar color to match the drawer when it's opened
+          SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+            statusBarColor:
+                Colors.black, // Change this to match your drawer color
+          ));
+          return SafeArea(
+            child: Container(
+              color: Colors.black, // Sets the background color to black
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: <Widget>[
+                  _drawerHeader(),
+                  ListTile(
+                    leading: const Icon(Icons.home, color: AppColors.textColor),
+                    title: const Text(
+                      'Home',
+                      style: TextStyle(
+                        color: AppColors.textColor,
+                        fontSize: 16,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  ListTile(
+                    leading:
+                        const Icon(Icons.settings, color: AppColors.textColor),
+                    title: const Text(
+                      'Settings',
+                      style: TextStyle(
+                        color: AppColors.textColor,
+                        fontSize: 16,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget yourSubscriptions() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 0.0),
+      child: Container(
+        alignment: Alignment.centerLeft,
+        child: const Text(
+          'Your Subscriptions:',
+          style: TextStyle(
+            fontFamily: 'OpenSans',
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+            color: AppColors.textColor,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-        leading: IconButton(
-            icon: isMenuOpen
-                ? const Icon(Icons.menu_open)
-                : const Icon(Icons.menu),
-            onPressed: () {
-              setState(() {
-                isMenuOpen = !isMenuOpen;
-              });
-            }),
-        backgroundColor: AppColors.secondaryColor,
-        title: _title(),
-        actions: [_signOutButton()],
+    return Theme(
+      data: ThemeData(canvasColor: AppColors.backgroundColor),
+      child: Scaffold(
+          backgroundColor: AppColors.backgroundColor,
+          appBar: AppBar(
+            leading: Builder(
+              builder: (BuildContext context) {
+                return IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                );
+              },
+            ),
+            backgroundColor: AppColors.secondaryColor,
+            title: _title(),
+            actions: [_signOutButton()],
+          ),
+          body: Builder(
+            builder: (BuildContext context) {
+              return SafeArea(
+                child: Container(
+                  height: double.infinity,
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      yourSubscriptions(),
+                      subItemList(),
+                      addASub()
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+          drawer: _drawer(context)),
+    );
+  }
+
+  final ButtonStyle addSubBtnStyle = ElevatedButton.styleFrom(
+      elevation: 1,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(50))));
+
+  Widget addASub() {
+    return ElevatedButton.icon(
+      onPressed: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => AddSubscription(
+                      userId: user!.uid,
+                    )));
+      },
+      style: addSubBtnStyle.copyWith(
+          backgroundColor:
+              const MaterialStatePropertyAll(AppColors.primaryColor)),
+      label: const Text(
+        'Create A Subscription',
+        style: TextStyle(
+            color: Colors.white, fontSize: 16, fontFamily: 'OpenSans'),
       ),
-      body: Container(
-          height: double.infinity,
-          width: double.infinity,
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              subItemList(),
-            ],
-          )),
+      icon: const Icon(
+        Icons.add_box_outlined,
+        color: AppColors.accentColor,
+      ),
     );
   }
 }
