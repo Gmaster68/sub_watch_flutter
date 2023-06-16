@@ -24,6 +24,10 @@ class Auth {
     );
   }
 
+  String getCurrentUserId() {
+    return currentUser!.uid;
+  }
+
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
   }

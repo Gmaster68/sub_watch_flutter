@@ -36,16 +36,22 @@ dependencies:
   firebase_auth: ^4.6.1
   cloud_firestore: ^4.7.1
   flutter_svg: ^1.1.0
-  intl: ^0.17.0
-
+  intl: ^0.18.1
+  fluttertoast: ^8.0.8
+  google_fonts: ^4.0.5
+  fading_edge_scrollview: ^3.0.0
+  fl_chart: ^0.62.0
+  table_calendar: ^3.0.1
+  flutter_lints: ^2.0.0
+  firebase_database: ^10.2.1
+  numberpicker: ^2.0.1
+  syncfusion_flutter_charts: ^21.2.8
+  flutter_rating_bar: ^4.0.1
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
-  firebase_database: ^10.2.1
-  numberpicker: ^2.0.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

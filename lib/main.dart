@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
-import 'package:sub_watch_flutter/colors.dart';
+import 'package:sub_watch_flutter/Utils/colors.dart';
 import './widget_tree.dart';
 
 void main() async {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'auth_page.dart';
-import './home_page.dart';
-import './login_register_page.dart';
+import 'Database/auth_page.dart';
+import 'Pages/start_page.dart';
+import 'Pages/login_register_page.dart';
 
 class WidgetTree extends StatefulWidget {
   const WidgetTree({Key? key}) : super(key: key);
@@ -18,7 +18,7 @@ class _WidgetTreeState extends State<WidgetTree> {
       stream: Auth().authStateChanges,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return HomePage();
+          return const StartPage();
         } else {
           return const LoginPage();
         }

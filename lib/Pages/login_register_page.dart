@@ -1,10 +1,9 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:sub_watch_flutter/colors.dart';
-import './auth_page.dart';
+import 'package:sub_watch_flutter/Utils/colors.dart';
+import '../Database/auth_page.dart';
+import '../Utils/constants.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -54,14 +53,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _welcomeMessage() {
-    return const Text(
-      'Welcome Aboard!',
-      style: TextStyle(
-          color: Color(0xfafafafa),
-          fontSize: 25,
-          fontWeight: FontWeight.bold,
-          fontFamily: 'Opensans'),
-    );
+    return Text('Welcome Aboard!',
+        style: Constants.basicTextStyle()
+            .copyWith(fontWeight: FontWeight.bold, fontSize: 25));
   }
 
   Widget _entryField(String title, TextEditingController controller) {
@@ -73,9 +67,9 @@ class _LoginPageState extends State<LoginPage> {
               fillColor: AppColors.secondaryColor,
               filled: true,
               hintText: title,
-              hintStyle: const TextStyle(
-                  color: Color.fromARGB(249, 113, 107, 107),
-                  fontFamily: 'OpenSans'),
+              hintStyle: Constants.basicTextStyle().copyWith(
+                color: const Color.fromARGB(249, 113, 107, 107),
+              ),
               focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: AppColors.accentColor)),
               enabledBorder: OutlineInputBorder(
@@ -104,9 +98,8 @@ class _LoginPageState extends State<LoginPage> {
               fillColor: AppColors.secondaryColor,
               filled: true,
               hintText: title,
-              hintStyle: const TextStyle(
-                  color: Color.fromARGB(249, 113, 107, 107),
-                  fontFamily: 'OpenSans'),
+              hintStyle: Constants.basicTextStyle()
+                  .copyWith(color: const Color.fromARGB(249, 113, 107, 107)),
               focusedBorder: const OutlineInputBorder(
                   borderSide: BorderSide(color: AppColors.accentColor)),
               enabledBorder: OutlineInputBorder(
@@ -132,10 +125,8 @@ class _LoginPageState extends State<LoginPage> {
               : createUserWithEmailAndPassword,
           child: Text(
             isLogin ? 'Login' : 'Register',
-            style: const TextStyle(
-                fontFamily: 'OpenSans',
-                fontSize: 20,
-                fontWeight: FontWeight.w600),
+            style: Constants.basicTextStyle()
+                .copyWith(fontSize: 20, fontWeight: FontWeight.w600),
           )),
     );
   }
@@ -157,8 +148,7 @@ class _LoginPageState extends State<LoginPage> {
           isLogin
               ? 'First time here? Register instead!'
               : 'You have an accout? Login instead!',
-          style: const TextStyle(
-              color: AppColors.textColor, fontFamily: 'OpenSans'),
+          style: Constants.basicTextStyle(),
         ));
   }
 

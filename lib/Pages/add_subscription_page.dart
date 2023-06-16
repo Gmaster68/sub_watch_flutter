@@ -1,10 +1,11 @@
-import 'dart:ffi';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:numberpicker/numberpicker.dart';
-import 'package:sub_watch_flutter/colors.dart';
-import 'package:sub_watch_flutter/subscription.dart';
+import 'package:sub_watch_flutter/Utils/colors.dart';
+import 'package:sub_watch_flutter/model/subscription.dart';
 
 const List<String> list = <String>[
   'MOVIES',
@@ -33,34 +34,37 @@ class _AddSubscription extends State<AddSubscription> {
   String subscriptionType = list.first;
 
   TextStyle _basicTextStyle() {
-    return const TextStyle(color: AppColors.textColor, fontFamily: 'OpenSans');
+    return GoogleFonts.robotoCondensed().copyWith(color: AppColors.textColor);
   }
 
   Widget _selectSubscriptionType() {
-    return DropdownButton<String>(
-        isExpanded: true,
-        iconSize: 40,
-        hint: Text('Pick A Type', style: _basicTextStyle()),
-        dropdownColor: AppColors.secondaryColor,
-        icon: const Icon(
-          Icons.arrow_drop_down_rounded,
-          color: AppColors.primaryColor,
-        ),
-        elevation: 16,
-        items: list.map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(
-              value,
-              style: _basicTextStyle(),
-            ),
-          );
-        }).toList(),
-        onChanged: (String? value) {
-          setState(() {
-            subscriptionType = value!;
-          });
-        });
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10),
+      child: DropdownButton<String>(
+          isExpanded: true,
+          iconSize: 40,
+          hint: Text('Pick A Type', style: _basicTextStyle()),
+          dropdownColor: AppColors.secondaryColor,
+          icon: const Icon(
+            Icons.arrow_drop_down_rounded,
+            color: AppColors.primaryColor,
+          ),
+          elevation: 16,
+          items: list.map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(
+                value,
+                style: _basicTextStyle(),
+              ),
+            );
+          }).toList(),
+          onChanged: (String? value) {
+            setState(() {
+              subscriptionType = value!;
+            });
+          }),
+    );
   }
 
   Widget _setSubscriptionName(TextEditingController nameController) {
@@ -86,14 +90,8 @@ class _AddSubscription extends State<AddSubscription> {
           minValue: 1,
           maxValue: 31,
           value: _subscriptionDay,
-          textStyle: const TextStyle(
-              fontSize: 20,
-              fontFamily: 'OpenSans',
-              color: AppColors.accentColor),
-          selectedTextStyle: const TextStyle(
-              fontSize: 25,
-              fontFamily: 'OpenSans',
-              color: AppColors.primaryColor),
+          textStyle: _basicTextStyle().copyWith(fontSize: 20),
+          selectedTextStyle: _basicTextStyle().copyWith(fontSize: 25),
           axis: Axis.horizontal,
           onChanged: (int value) {
             setState(() {
@@ -104,9 +102,9 @@ class _AddSubscription extends State<AddSubscription> {
   }
 
   Widget _title() {
-    return const Text(
+    return Text(
       'Add A Subscription',
-      style: TextStyle(color: AppColors.textColor, fontFamily: 'OpenSans'),
+      style: _basicTextStyle(),
     );
   }
 
@@ -147,21 +145,30 @@ class _AddSubscription extends State<AddSubscription> {
     );
   }
 
-  void addSubscriptionToDB(String userId) {
+  void addSubscriptionToDB(String userId, context) async {
     Subscription sub = Subscription(
         acquisitionDate: dateTime,
         monthlyPaymentDay: _subscriptionDay,
         name: _nameController.text,
         price: double.parse(_priceController.text),
         subscriptionType: subscriptionType);
-
-    sub.saveToDatabase(userId);
+    log(sub.toString());
+    bool exist = await sub.saveToDatabase(userId);
+    if (exist) {
+      //worked
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Subscription saved')),
+      );
+      Navigator.pop(context);
+    }
   }
 
-  Widget _saveSubscriptionBtn() {
+  Widget _saveSubscriptionBtn(BuildContext context) {
     return MaterialButton(
       color: AppColors.primaryColor,
-      onPressed: () => {addSubscriptionToDB(widget.userId)},
+      onPressed: () => {
+        addSubscriptionToDB(widget.userId, context),
+      },
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Text('Save Subscription',
@@ -186,7 +193,7 @@ class _AddSubscription extends State<AddSubscription> {
             _setSubscriptionDay(_subscriptionDay),
             _setSubscriptionPrice(),
             _setSupbscriptionDatePicker(),
-            _saveSubscriptionBtn()
+            _saveSubscriptionBtn(context)
           ],
         ));
   }
